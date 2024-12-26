@@ -26,10 +26,18 @@ export function UpdateInvoice({ id }: { id: string }) {
 }
 
 export function DeleteInvoice({ id }: { id: string }) {
-  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+  const handleDelete = async (e: React.FormEvent) => {
+    e.preventDefault(); // 폼 제출로 인한 페이지 새로고침 방지
+    try {
+      await deleteInvoice(id); // 삭제 함수 호출
+      console.log(`Invoice ${id} deleted successfully`);
+    } catch (error) {
+      console.error(`Failed to delete invoice: ${error}`);
+    }
+  };
 
   return (
-    <form action={deleteInvoiceWithId}>
+    <form onSubmit={handleDelete}>
       <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-4" />
